@@ -2,15 +2,8 @@
 	var ubdc=new Object();//="define me";
 	//if(typeof(window.ubdc) =="undefined"){
 	if(!hasInstalled()){
-		//collect information
-		var nav = new Object();
-		//
-		nav.appCodeName= window.navigator.appCodeName;
-		nav.appName=window.navigator.appName;
-		nav.platform = window.navigator.platform;
-		nav.userAgent=window.navigator.userAgent;
-		nav.ospu=window.navigator.oscpu;
-		ubdc.navigator=nav;
+		//collect runtime information
+		ubdc.runtime=gatherRuntime();
 		
 		//find cookie and get the terminal device ID, 
 		
@@ -26,7 +19,15 @@
 	}
 	
 	function gatherRuntime(){
-		
+ 		var nav = new Object();
+                //don't parse detail information here, which should be done in analysis
+                nav.appCodeName= window.navigator.appCodeName;
+                nav.appName=window.navigator.appName;
+                nav.platform = window.navigator.platform;
+                nav.userAgent=window.navigator.userAgent;
+                nav.ospu=window.navigator.oscpu;
+                //ubdc.navigator=nav;
+                return nav;
 	}
 	
 	
