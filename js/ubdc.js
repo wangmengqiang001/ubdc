@@ -17,7 +17,10 @@
                 
 
                 //get screen information
-                ubdc.screenInfo = gatherScreenInfo();		
+                ubdc.screenInfo = gatherScreenInfo();
+		
+		//get page  information
+		ubdc.pageInfo=gatherPageInfo();
 	
 		//setup page timer and unload event handler 
 		
@@ -88,6 +91,41 @@
 			if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
 		}
 		return "";
+	}
+        function gatherPageInfo(){
+    		
+
+		function getTitle(){
+			return window.top.document.title;
+		}
+		function getUrl(){
+			return window.top.location.href;
+		}
+
+		function getReferrer() {
+			 var referrer = ''; 
+			 try { 
+				referrer = window.top.document.referrer; 
+			 }  catch(e) {
+				if(window.parent) {
+					try { 
+						referrer = window.parent.document.referrer; 
+					} catch(e2) {
+						referrer = ''; 
+					} 
+				} 
+			} 
+			if(referrer === '') {
+				referrer = document.referrer;
+			} 
+			return referrer; 
+		}
+
+		var pi = new Object();
+		pi.title=getTitle();
+		pi.url=getUrl();
+		pi.referrer=getReferrer();
+		return pi;
 	}
 
 })(window,document);
