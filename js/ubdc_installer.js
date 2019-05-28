@@ -10,11 +10,10 @@
 	 
 	
 	function installJS(urljs){
-		var head=document.getElementsByTagName("head");
 		var scripts=document.getElementsByTagName("script");
 		var ubdcScript=document.createElement("Script");
 		ubdcScript.src=urljs;
-		head[0].insertBefore(ubdcScript,scripts[0]);
+		scripts[0].parentNode.insertBefore(ubdcScript,scripts[0]);
 	}
 
 })(window,document);
