@@ -1,0 +1,16 @@
+<html>
+<head>
+<script src="../js/ubdc_installer.js"></script>
+</head>
+<body>
+<script>
+     function showMsg(){
+	var msgDiv = document.getElementById("blackboard");
+	msgDiv.innerText += JSON.stringify(window["ubdc"]);
+ }
+</script>
+<button onclick="showMsg()">update Msg</button>
+<div id="blackboard"></div>
+
+</body>
+</html>

@@ -2,14 +2,24 @@
 	var ubdc=new Object();//="define me";
 	//if(typeof(window.ubdc) =="undefined"){
 	if(!hasInstalled()){
-		//collect runtime information
+                //find cookie and get the terminal device ID
+		var deviceId = getCookie("deviceId");
+                if( typeof(deviceId) == "undefined"|| deviceId ==""){
+			deviceId = uuid();
+			setCookie("deviceId",deviceId,50*365);
+
+		}
+		ubdc.guid=deviceId;
+	
+     		//collect runtime information
+               
 		ubdc.runtime=gatherRuntime();
-		
-		//find cookie and get the terminal device ID, 
-		ubdc.guid=uuid();//guid_2();
-		//store the application ID
-		
-		//setup timer to record 
+                
+
+                //get screen information
+                ubdc.screenInfo = gatherScreenInfo();		
+	
+		//setup page timer and unload event handler 
 		
 		
 		//set the mouse tracer to record the mouse event
@@ -29,7 +39,15 @@
                 //ubdc.navigator=nav;
                 return nav;
 	}
-	
+	function gatherScreenInfo(){
+		var si = new Object();
+                si.width=window.screen.width;
+		si.height=window.screen.height;
+		si.availHeight=window.screen.availHeight;
+		si.availWidth=window.screen.availWidth;
+		return si;
+        }
+
 	function guid() {
   		function S4() {
     			return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
@@ -55,6 +73,21 @@
 	 
 	    var uuid = s.join("");
 	    return uuid;
+	}
+        function setCookie(cname,cvalue,exdays){
+		var d = new Date();
+		d.setTime(d.getTime()+(exdays*24*60*60*1000));
+		var expires = "expires="+d.toGMTString();
+		document.cookie = cname+"="+cvalue+"; "+expires;
+	}
+	function getCookie(cname){
+		var name = cname + "=";
+		var ca = document.cookie.split(';');
+		for(var i=0; i<ca.length; i++) {
+			var c = ca[i].trim();
+			if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+		}
+		return "";
 	}
 
 })(window,document);
