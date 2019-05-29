@@ -1,6 +1,7 @@
 (function(window,document){
 	var ubdc=new Object();//="define me";
-	//if(typeof(window.ubdc) =="undefined"){
+        var tmStart=new Date(); //start time to calculate the time on page(TOP)
+	
 	if(!hasInstalled()){
                 //find cookie and get the terminal device ID
 		var deviceId = getCookie("deviceId");
@@ -20,17 +21,38 @@
                 ubdc.screenInfo = gatherScreenInfo();
 		
 		//get page  information
-		ubdc.pageInfo=gatherPageInfo();
+		ubdc.pageInfo=gatherPageInfo(tmStart);
 	
 		//setup page timer and unload event handler 
 		
 		
 		//set the mouse tracer to record the mouse event
-		
-		
+
+		//show test button 
+		//var btnUpdate=document.createElement("button");//getElementById("updateTOP");
+		//btnUpdate.text="update TOP";
+		//btnUpdate.onclick=updateTimeOnPage;
+		//document.body.appendChild(btnUpdate);
 		window.ubdc=ubdc;
+                //'unload' and 'beforeunload' can be enabled by addEventListener only
+                //window.onbeforeunload=function --it won't be invoked
+                window.addEventListener("unload",function(){
+                	endTimer(window.ubdc.pageInfo);
+	                console.log(window.ubdc.pageInfo);
+        
+		});
+
 	}
-	
+
+	function endTimer(pgInfo){
+		var tmLeave = new Date();
+		pgInfo.time_leave=tmLeave;
+		
+		var diff=typeof(pgInfo.time_start)!="undefined"?(tmLeave.getTime()-pgInfo.time_start.getTime()):0;
+                pgInfo.timeOnPage=diff;
+
+	}
+
 	function gatherRuntime(){
  		var nav = new Object();
                 //don't parse detail information here, which should be done in analysis
@@ -92,7 +114,7 @@
 		}
 		return "";
 	}
-        function gatherPageInfo(){
+        function gatherPageInfo(start){
     		
 
 		function getTitle(){
@@ -125,6 +147,7 @@
 		pi.title=getTitle();
 		pi.url=getUrl();
 		pi.referrer=getReferrer();
+		pi.time_start=start;
 		return pi;
 	}
 
